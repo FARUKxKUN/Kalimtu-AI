@@ -7,6 +7,11 @@ const resendApiKey = process.env.RESEND_API_KEY;
 // Only initialize if API key is present (graceful degradation)
 const resend = resendApiKey ? new Resend(resendApiKey) : null;
 
+// Log initialization status
+if (process.env.NODE_ENV === "production" || process.env.NODE_ENV === "development") {
+  console.log("📧 Email module initialized - Resend:", resendApiKey ? "✓ API key present" : "✗ API key missing");
+}
+
 interface SendWaitlistConfirmationParams {
   readonly email: string;
   readonly position: number;

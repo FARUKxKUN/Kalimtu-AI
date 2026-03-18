@@ -23,6 +23,6 @@ export const WAITLIST = {
 
 // Email config
 export const EMAIL = {
-  FROM: process.env.EMAIL_FROM || "Kalimtu <noreply@kalimtu.com>",
+  FROM: process.env.EMAIL_FROM || "onboarding@resend.dev",
   SUBJECT: "Welcome to the Kalimtu waitlist!",
 } as const;
