@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Check } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -26,6 +26,25 @@ export function WaitlistForm({
   const [status, setStatus] = useState<FormStatus>("idle");
   const [errorMessage, setErrorMessage] = useState("");
   const [count, setCount] = useState<number | null>(null);
+
+  // Fetch waitlist count on mount
+  useEffect(() => {
+    if (!showCount) return;
+
+    const fetchCount = async () => {
+      try {
+        const response = await fetch("/api/waitlist");
+        const data = await response.json();
+        if (data.success && typeof data.data.count === "number") {
+          setCount(data.data.count);
+        }
+      } catch (err) {
+        console.error("Failed to fetch waitlist count:", err);
+      }
+    };
+
+    fetchCount();
+  }, [showCount]);
 
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
