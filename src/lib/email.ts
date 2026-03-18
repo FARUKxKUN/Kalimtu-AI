@@ -23,16 +23,23 @@ export async function sendWaitlistConfirmation({
   }
 
   try {
-    await resend.emails.send({
+    console.log("📧 Sending email from:", EMAIL.FROM);
+    console.log("📧 To:", email);
+    console.log("📧 Resend client:", resend ? "initialized" : "null");
+
+    const response = await resend.emails.send({
       from: EMAIL.FROM,
       to: email,
       subject: EMAIL.SUBJECT,
       html: buildWaitlistEmailHtml({ email, position }),
     });
 
+    console.log("📧 Email response:", response);
+    logger.info("Waitlist confirmation email sent", { email, position });
     return { success: true };
   } catch (error) {
     // Don't let email failure break the waitlist signup
+    console.error("❌ Email send error:", error);
     logger.error("Failed to send waitlist confirmation email", error as Error, { email });
     return { success: false };
   }

@@ -15,12 +15,11 @@ const StyledButton = styled.button`
   font-size: 16px;
   background: #C1FF00;
   color: #0A0A0F;
-  padding: 0.6875rem 1.5rem;
-  padding-left: 1rem;
+  padding: 0.6875rem 1rem;
+  padding-left: 0.9rem;
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 0.5em;
+  gap: 0.3em;
   border: none;
   border-radius: 16px;
   overflow: hidden;
@@ -28,8 +27,6 @@ const StyledButton = styled.button`
   cursor: pointer;
   font-weight: 600;
   height: fit-content;
-  white-space: nowrap;
-  min-width: 170px;
 
   span {
     display: block;

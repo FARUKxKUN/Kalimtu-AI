@@ -87,7 +87,9 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     const position = createResult.data.position;
 
     // 6. Send confirmation email (non-blocking, don't fail the request)
+    console.log("🔔 About to send waitlist confirmation email...");
     sendWaitlistConfirmation({ email, position }).catch((err) => {
+      console.error("❌ Email send error caught:", err);
       logger.error("Email send failed (non-blocking)", err as Error, { email });
     });
 
