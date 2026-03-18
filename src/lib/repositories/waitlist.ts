@@ -83,7 +83,6 @@ export class WaitlistRepository {
         .from('waitlist')
         .insert({
           email: input.email.toLowerCase(),
-          position,
           source: input.source
         })
         .select()
@@ -100,7 +99,8 @@ export class WaitlistRepository {
         }
       }
 
-      return { success: true, data }
+      // Return entry with calculated position
+      return { success: true, data: { ...data, position } as WaitlistEntryDB }
     } catch (err) {
       logger.error('Unexpected error while creating entry', err as Error, {
         operation: 'create'

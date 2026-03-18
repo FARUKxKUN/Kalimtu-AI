@@ -2,9 +2,9 @@
 
 import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, Check, Loader2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Check } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { SendButton } from "@/components/ui/send-button";
 import { z } from "zod";
 
 const emailSchema = z.string().email("Please enter a valid email address");
@@ -97,7 +97,7 @@ export function WaitlistForm({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             onSubmit={handleSubmit}
-            className="flex flex-col sm:flex-row gap-3"
+            className="flex flex-col sm:flex-row gap-3 sm:items-center"
           >
             <Input
               type="email"
@@ -114,20 +114,11 @@ export function WaitlistForm({
               className="sm:min-w-[280px]"
               disabled={status === "loading"}
             />
-            <Button
+            <SendButton
+              isLoading={status === "loading"}
+              disabled={!email}
               type="submit"
-              disabled={status === "loading" || !email}
-              className="shrink-0"
-            >
-              {status === "loading" ? (
-                <Loader2 size={16} className="animate-spin" />
-              ) : (
-                <>
-                  Join Waitlist
-                  <ArrowRight size={16} />
-                </>
-              )}
-            </Button>
+            />
           </motion.form>
         )}
       </AnimatePresence>

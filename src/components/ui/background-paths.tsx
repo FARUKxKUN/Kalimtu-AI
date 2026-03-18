@@ -64,14 +64,14 @@ export function BackgroundPaths({
   const words = title.split(" ");
 
   return (
-    <section className="relative py-32 md:py-48 w-full flex items-center justify-center overflow-hidden bg-[#0A0A0F]">
-      <div className="absolute inset-0">
+    <section className="relative py-32 md:py-48 w-full flex items-center justify-center overflow-visible bg-[#0A0A0F]">
+      <div className="absolute inset-0 overflow-hidden">
         <FloatingPaths position={1} />
         <FloatingPaths position={-1} />
       </div>
 
-      {/* Glow effect */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#C1FF00]/5 blur-[140px] rounded-full pointer-events-none" />
+      {/* Glow effect - extends beyond section */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#C1FF00]/5 blur-[160px] rounded-full pointer-events-none z-50" style={{ filter: 'blur(160px)', WebkitFilter: 'blur(160px)' }} />
 
       <div className="relative z-10 container mx-auto px-4 md:px-6 text-center">
         <motion.div

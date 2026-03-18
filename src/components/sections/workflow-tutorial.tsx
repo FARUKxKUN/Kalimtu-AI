@@ -83,7 +83,9 @@ export function WorkflowTutorial() {
   };
 
   return (
-    <section id="workflow" className="section-padding bg-[#0A0A0F] relative overflow-hidden">
+    <section id="workflow" className="section-padding bg-[#0A0A0F] relative overflow-visible">
+      {/* Continuing glow from previous section */}
+      <div className="absolute -top-96 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-[#C1FF00]/5 blur-[160px] rounded-full pointer-events-none z-50" style={{ filter: 'blur(160px)', WebkitFilter: 'blur(160px)' }} />
       <Container>
         {/* Header */}
         <div className="flex flex-col items-center text-center mb-16">
