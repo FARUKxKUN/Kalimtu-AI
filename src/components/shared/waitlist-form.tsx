@@ -1,10 +1,12 @@
 "use client";
 
 import { useState, useCallback, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Check } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { SendButton } from "@/components/ui/send-button";
+import { supabase } from "@/lib/supabase";
 import { z } from "zod";
 
 const emailSchema = z.string().email("Please enter a valid email address");
@@ -22,6 +24,7 @@ export function WaitlistForm({
   className,
   showCount = false,
 }: WaitlistFormProps) {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<FormStatus>("idle");
   const [errorMessage, setErrorMessage] = useState("");
@@ -61,9 +64,21 @@ export function WaitlistForm({
       setErrorMessage("");
 
       try {
+        // Get auth token from Supabase
+        const { data: sessionData } = await supabase.auth.getSession();
+        const token = sessionData.session?.access_token;
+
+        if (!token) {
+          router.push("/login");
+          return;
+        }
+
         const response = await fetch("/api/waitlist", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+          },
           body: JSON.stringify({ email, source }),
         });
 
@@ -85,7 +100,7 @@ export function WaitlistForm({
         );
       }
     },
-    [email, source]
+    [email, source, router]
   );
 
   return (

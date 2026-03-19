@@ -10,6 +10,25 @@ import { WaitlistRepository } from "@/lib/repositories/waitlist";
 import { handleError } from "@/app/api/error-handler";
 import type { ApiResponse, WaitlistResponseData } from "@/lib/types";
 
+// Helper to verify auth token from request
+async function verifyAuth(request: NextRequest) {
+  const token = request.headers.get("authorization")?.replace("Bearer ", "");
+  if (!token) {
+    throw ApiError.unauthorized("Authentication required");
+  }
+
+  if (!supabaseAdmin) {
+    throw ApiError.internal("Service unavailable");
+  }
+
+  const { data, error } = await supabaseAdmin.auth.getUser(token);
+  if (error || !data.user) {
+    throw ApiError.unauthorized("Invalid or expired token");
+  }
+
+  return data.user;
+}
+
 // Zod schema for request validation
 const waitlistSchema = z.object({
   email: z
@@ -27,12 +46,15 @@ const waitlistSchema = z.object({
 
 export async function POST(request: NextRequest): Promise<NextResponse> {
   try {
-    // 1. Check Supabase admin client is available
+    // 1. Verify authentication
+    const user = await verifyAuth(request);
+
+    // 2. Check Supabase admin client is available
     if (!supabaseAdmin) {
       throw ApiError.internal("Service temporarily unavailable");
     }
 
-    // 2. Rate limiting by IP
+    // 3. Rate limiting by IP
     const forwardedFor = request.headers.get("x-forwarded-for");
     const ip = forwardedFor?.split(",")[0]?.trim() ?? "unknown";
     const rateLimitResult = checkRateLimit(ip);
@@ -41,7 +63,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       throw ApiError.rateLimit(rateLimitResult.resetIn);
     }
 
-    // 3. Parse and validate request body
+    // 4. Parse and validate request body
     const body: unknown = await request.json().catch(() => null);
 
     if (!body) {
@@ -57,7 +79,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
     const { email, source } = parseResult.data;
 
-    // 4. Use repository to check for duplicates and create entry
+    // 5. Use repository to check for duplicates and create entry
     const repository = new WaitlistRepository(supabaseAdmin);
 
     const existingResult = await repository.findByEmail(email);
@@ -78,7 +100,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       return NextResponse.json(response, { status: 200 });
     }
 
-    // 5. Create new waitlist entry
+    // 6. Create new waitlist entry
     const createResult = await repository.create({ email, source });
     if (!createResult.success) {
       throw createResult.error;
@@ -86,7 +108,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
     const position = createResult.data.position;
 
-    // 6. Send confirmation email (non-blocking, don't fail the request)
+    // 7. Send confirmation email (non-blocking, don't fail the request)
     console.log("🔔 About to send waitlist confirmation email...");
     sendWaitlistConfirmation({ email, position }).catch((err) => {
       console.error("❌ Email send error caught:", err);
