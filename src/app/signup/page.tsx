@@ -48,45 +48,31 @@ const itemVariants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
 };
 
-export default function LoginPage() {
+export default function SignUpPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [isSignUp, setIsSignUp] = useState(false);
+  const [fullName, setFullName] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [agreeTerms, setAgreeTerms] = useState(false);
-  const { signIn, signUp, error, loading } = useAuth();
+  const { signUp, error, loading } = useAuth();
   const router = useRouter();
 
   const passwordStrength = useMemo(() => calculatePasswordStrength(password), [password]);
   const isPasswordValid = password.length >= 8;
-  const isConfirmValid = isSignUp ? password === confirmPassword && confirmPassword.length >= 8 : true;
-  const isFormValid = email && isPasswordValid && isConfirmValid && (!isSignUp || agreeTerms);
+  const isConfirmValid = password === confirmPassword && confirmPassword.length >= 8;
+  const isFormValid = email && fullName && isPasswordValid && isConfirmValid && agreeTerms;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      if (isSignUp) {
-        await signUp(email, password);
-      } else {
-        await signIn(email, password);
-      }
+      await signUp(email, password);
       router.push("/");
     } catch (err) {
       console.error(err);
     }
-  };
-
-  const handleToggleMode = () => {
-    setEmail("");
-    setPassword("");
-    setConfirmPassword("");
-    setShowPassword(false);
-    setShowConfirm(false);
-    setAgreeTerms(false);
-    setIsSignUp(!isSignUp);
   };
 
   return (
@@ -106,14 +92,69 @@ export default function LoginPage() {
       {/* Main content */}
       <div className="relative z-10 min-h-screen flex items-center justify-center px-4 py-12">
         <div className="w-full max-w-6xl">
-          {/* Split layout container */}
           <motion.div
             variants={containerVariants}
             initial="hidden"
             animate="visible"
             className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center"
           >
-            {/* Left side - Form */}
+            {/* Left side - Brand info (visible on desktop) */}
+            <motion.div variants={itemVariants} className="hidden lg:block">
+              <div className="space-y-8">
+                <div>
+                  <h2 className="text-4xl font-bold text-white mb-4">Join Kalimtu Today</h2>
+                  <p className="text-[#A0A0B8] text-lg leading-relaxed">
+                    Get early access to the AI transcription service built for Tunisian professionals.
+                  </p>
+                </div>
+
+                <div className="space-y-6">
+                  {[
+                    {
+                      num: "01",
+                      title: "Create Your Account",
+                      desc: "Sign up with your email and secure password",
+                    },
+                    {
+                      num: "02",
+                      title: "Verify Your Email",
+                      desc: "We'll send you a confirmation link",
+                    },
+                    {
+                      num: "03",
+                      title: "Start Transcribing",
+                      desc: "Access Kalimtu's full suite of AI tools",
+                    },
+                  ].map((step, i) => (
+                    <motion.div
+                      key={i}
+                      whileHover={{ x: 8 }}
+                      className="flex gap-4"
+                    >
+                      <div className="text-2xl font-bold text-[#C1FF00] flex-shrink-0">{step.num}</div>
+                      <div>
+                        <h3 className="font-semibold text-white mb-1">{step.title}</h3>
+                        <p className="text-sm text-[#A0A0B8]">{step.desc}</p>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+
+                {/* Quote */}
+                <motion.div
+                  animate={{ y: [0, 10, 0] }}
+                  transition={{ duration: 5, repeat: Infinity }}
+                  className="mt-12 p-6 rounded-2xl border border-[#C1FF00]/20 bg-[#C1FF00]/5 backdrop-blur"
+                >
+                  <p className="text-sm italic text-[#A0A0B8] mb-2">
+                    "Kalimtu changed how I manage transcripts. It's fast, accurate, and designed for my needs."
+                  </p>
+                  <p className="text-xs font-semibold text-[#C1FF00]">— Early Access User</p>
+                </motion.div>
+              </div>
+            </motion.div>
+
+            {/* Right side - Form */}
             <motion.div variants={itemVariants} className="w-full">
               {/* Logo */}
               <motion.div variants={itemVariants} className="mb-12">
@@ -124,13 +165,9 @@ export default function LoginPage() {
 
               {/* Heading */}
               <motion.div variants={itemVariants} className="mb-8">
-                <h1 className="text-5xl font-bold text-white mb-2">
-                  {isSignUp ? "Join Us Today" : "Welcome Back"}
-                </h1>
+                <h1 className="text-5xl font-bold text-white mb-2">Create Account</h1>
                 <p className="text-[#A0A0B8] text-lg">
-                  {isSignUp
-                    ? "Get early access to Kalimtu's AI transcription service"
-                    : "Sign in to access your Kalimtu account"}
+                  Get early access to Kalimtu's AI transcription service
                 </p>
               </motion.div>
 
@@ -151,15 +188,28 @@ export default function LoginPage() {
 
               {/* Form */}
               <motion.form onSubmit={handleSubmit} variants={containerVariants} className="space-y-6">
+                {/* Full Name field */}
+                <motion.div variants={itemVariants}>
+                  <label htmlFor="fullname" className="block text-sm font-medium text-white mb-3">
+                    Full Name
+                  </label>
+                  <input
+                    id="fullname"
+                    type="text"
+                    placeholder="Your name"
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
+                    required
+                    className="w-full bg-white/5 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-white/40 focus:border-[#C1FF00] focus:ring-2 focus:ring-[#C1FF00]/20 transition-all duration-200"
+                  />
+                </motion.div>
+
                 {/* Email field */}
                 <motion.div variants={itemVariants}>
                   <label htmlFor="email" className="block text-sm font-medium text-white mb-3">
                     Email Address
                   </label>
-                  <motion.div
-                    whileFocus={{ scale: 1.02 }}
-                    className="relative"
-                  >
+                  <motion.div whileFocus={{ scale: 1.02 }} className="relative">
                     <input
                       id="email"
                       type="email"
@@ -186,10 +236,7 @@ export default function LoginPage() {
                   <label htmlFor="password" className="block text-sm font-medium text-white mb-3">
                     Password
                   </label>
-                  <motion.div
-                    whileFocus={{ scale: 1.02 }}
-                    className="relative"
-                  >
+                  <motion.div whileFocus={{ scale: 1.02 }} className="relative">
                     <input
                       id="password"
                       type={showPassword ? "text" : "password"}
@@ -208,9 +255,9 @@ export default function LoginPage() {
                     </button>
                   </motion.div>
 
-                  {/* Password strength indicator - only show when typing */}
+                  {/* Password strength indicator */}
                   <AnimatePresence>
-                    {isSignUp && password.length > 0 && (
+                    {password.length > 0 && (
                       <motion.div
                         initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -232,86 +279,64 @@ export default function LoginPage() {
                         </div>
                         <p className="text-xs text-[#6B6B80]">
                           {password.length < 8
-                            ? `${8 - password.length} more characters needed`
-                            : "Password meets requirements"}
+                            ? `${8 - password.length} more characters`
+                            : "Strong password ✓"}
                         </p>
                       </motion.div>
                     )}
                   </AnimatePresence>
                 </motion.div>
 
-                {/* Confirm password - only for signup */}
-                <AnimatePresence>
-                  {isSignUp && (
-                    <motion.div
-                      variants={itemVariants}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 10 }}
+                {/* Confirm password */}
+                <motion.div variants={itemVariants}>
+                  <label htmlFor="confirm" className="block text-sm font-medium text-white mb-3">
+                    Confirm Password
+                  </label>
+                  <motion.div whileFocus={{ scale: 1.02 }} className="relative">
+                    <input
+                      id="confirm"
+                      type={showConfirm ? "text" : "password"}
+                      placeholder="••••••••"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      required
+                      className="w-full bg-white/5 border border-white/20 rounded-xl px-4 py-3 pr-12 text-white placeholder-white/40 focus:border-[#C1FF00] focus:ring-2 focus:ring-[#C1FF00]/20 transition-all duration-200"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowConfirm(!showConfirm)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-[#A0A0B8] hover:text-[#C1FF00] transition-colors"
                     >
-                      <label htmlFor="confirm" className="block text-sm font-medium text-white mb-3">
-                        Confirm Password
-                      </label>
-                      <motion.div
-                        whileFocus={{ scale: 1.02 }}
-                        className="relative"
-                      >
-                        <input
-                          id="confirm"
-                          type={showConfirm ? "text" : "password"}
-                          placeholder="••••••••"
-                          value={confirmPassword}
-                          onChange={(e) => setConfirmPassword(e.target.value)}
-                          required={isSignUp}
-                          className="w-full bg-white/5 border border-white/20 rounded-xl px-4 py-3 pr-12 text-white placeholder-white/40 focus:border-[#C1FF00] focus:ring-2 focus:ring-[#C1FF00]/20 transition-all duration-200"
-                        />
-                        <button
-                          type="button"
-                          onClick={() => setShowConfirm(!showConfirm)}
-                          className="absolute right-3 top-1/2 -translate-y-1/2 text-[#A0A0B8] hover:text-[#C1FF00] transition-colors"
-                        >
-                          {showConfirm ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                        </button>
-                      </motion.div>
-                      {confirmPassword && confirmPassword !== password && (
-                        <p className="text-xs text-red-400 mt-2">Passwords don't match</p>
-                      )}
-                      {confirmPassword && confirmPassword === password && (
-                        <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="flex items-center gap-1 mt-2">
-                          <Check className="w-4 h-4 text-[#C1FF00]" />
-                          <p className="text-xs text-[#C1FF00]">Passwords match</p>
-                        </motion.div>
-                      )}
+                      {showConfirm ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                    </button>
+                  </motion.div>
+                  {confirmPassword && confirmPassword !== password && (
+                    <p className="text-xs text-red-400 mt-2">Passwords don't match</p>
+                  )}
+                  {confirmPassword && confirmPassword === password && (
+                    <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="flex items-center gap-1 mt-2">
+                      <Check className="w-4 h-4 text-[#C1FF00]" />
+                      <p className="text-xs text-[#C1FF00]">Passwords match</p>
                     </motion.div>
                   )}
-                </AnimatePresence>
+                </motion.div>
 
-                {/* Terms checkbox - only for signup */}
-                <AnimatePresence>
-                  {isSignUp && (
-                    <motion.div
-                      variants={itemVariants}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 10 }}
-                      className="flex items-center gap-3"
-                    >
-                      <input
-                        id="terms"
-                        type="checkbox"
-                        checked={agreeTerms}
-                        onChange={(e) => setAgreeTerms(e.target.checked)}
-                        className="w-4 h-4 rounded border border-white/20 bg-white/5 checked:bg-[#C1FF00] checked:border-[#C1FF00] cursor-pointer"
-                      />
-                      <label htmlFor="terms" className="text-sm text-[#A0A0B8] cursor-pointer">
-                        I agree to the{" "}
-                        <a href="#" className="text-[#C1FF00] hover:text-[#B8E600] underline">
-                          Terms of Service
-                        </a>
-                      </label>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                {/* Terms checkbox */}
+                <motion.div variants={itemVariants} className="flex items-center gap-3">
+                  <input
+                    id="terms"
+                    type="checkbox"
+                    checked={agreeTerms}
+                    onChange={(e) => setAgreeTerms(e.target.checked)}
+                    className="w-4 h-4 rounded border border-white/20 bg-white/5 checked:bg-[#C1FF00] checked:border-[#C1FF00] cursor-pointer"
+                  />
+                  <label htmlFor="terms" className="text-sm text-[#A0A0B8] cursor-pointer">
+                    I agree to the{" "}
+                    <a href="#" className="text-[#C1FF00] hover:text-[#B8E600] underline">
+                      Terms of Service
+                    </a>
+                  </label>
+                </motion.div>
 
                 {/* Submit button */}
                 <motion.button
@@ -323,7 +348,7 @@ export default function LoginPage() {
                   className="w-full bg-[#C1FF00] hover:bg-[#B8E600] disabled:bg-[#6B6B80] text-slate-900 font-semibold py-3 rounded-xl cursor-pointer transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed mt-8 relative overflow-hidden group"
                 >
                   <span className="relative z-10">
-                    {loading ? "Processing..." : isSignUp ? "Create Account" : "Sign In"}
+                    {loading ? "Creating Account..." : "Create Account"}
                   </span>
                   {!loading && (
                     <motion.div
@@ -336,16 +361,15 @@ export default function LoginPage() {
                 </motion.button>
               </motion.form>
 
-              {/* Toggle mode */}
+              {/* Sign in link */}
               <motion.p variants={itemVariants} className="text-center text-[#A0A0B8] text-sm mt-8">
-                {isSignUp ? "Already have an account? " : "Don't have an account? "}
-                <button
-                  type="button"
-                  onClick={handleToggleMode}
+                Already have an account?{" "}
+                <Link
+                  href="/login"
                   className="text-[#C1FF00] hover:text-[#B8E600] font-semibold transition-colors"
                 >
-                  {isSignUp ? "Sign in" : "Sign up"}
-                </button>
+                  Sign in
+                </Link>
               </motion.p>
 
               {/* Back link */}
@@ -357,48 +381,6 @@ export default function LoginPage() {
                   ← Back to home
                 </Link>
               </motion.div>
-            </motion.div>
-
-            {/* Right side - Brand info (visible on desktop) */}
-            <motion.div variants={itemVariants} className="hidden lg:block">
-              <div className="space-y-8">
-                <div>
-                  <h2 className="text-3xl font-bold text-white mb-4">What is Kalimtu?</h2>
-                  <p className="text-[#A0A0B8] leading-relaxed">
-                    Kalimtu is an AI-powered transcription service designed specifically for Tunisian professionals.
-                    Transcribe, translate, and understand audio in seconds.
-                  </p>
-                </div>
-
-                <div className="space-y-4">
-                  {[
-                    { icon: "⚡", title: "Lightning Fast", desc: "Get results in seconds, not hours" },
-                    { icon: "🎯", title: "99% Accurate", desc: "Powered by state-of-the-art AI" },
-                    { icon: "🔒", title: "Secure & Private", desc: "Your data stays encrypted" },
-                  ].map((feature, i) => (
-                    <motion.div
-                      key={i}
-                      whileHover={{ x: 8 }}
-                      className="flex gap-4"
-                    >
-                      <span className="text-3xl flex-shrink-0">{feature.icon}</span>
-                      <div>
-                        <h3 className="font-semibold text-white">{feature.title}</h3>
-                        <p className="text-sm text-[#A0A0B8]">{feature.desc}</p>
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-
-                {/* Decorative gradient box */}
-                <motion.div
-                  animate={{ y: [0, 10, 0] }}
-                  transition={{ duration: 5, repeat: Infinity }}
-                  className="mt-12 p-6 rounded-2xl border border-[#C1FF00]/20 bg-[#C1FF00]/5 backdrop-blur"
-                >
-                  <p className="text-sm text-[#C1FF00] font-medium">✨ Join 1,000+ early access users</p>
-                </motion.div>
-              </div>
             </motion.div>
           </motion.div>
         </div>

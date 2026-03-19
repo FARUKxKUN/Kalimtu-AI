@@ -2,7 +2,10 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, X, LogOut } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 
 const AnimatedNavLink = ({
@@ -39,6 +42,8 @@ export function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [headerShape, setHeaderShape] = useState("rounded-full");
   const shapeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const { user, signOut, loading } = useAuth();
+  const router = useRouter();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -68,19 +73,41 @@ export function Header() {
     <img src="/logo.svg" alt="Kalimtu Logo" className="h-6 w-auto object-contain" />
   );
 
-  const loginButtonElement = (
-    <button className="px-4 py-2 sm:px-3 text-xs sm:text-sm border border-[#3D3D54] bg-transparent text-[#A0A0B8] rounded-full hover:border-[#C1FF00]/60 hover:text-[#C1FF00] transition-colors duration-200 w-full sm:w-auto font-medium">
-      Log In
-    </button>
-  );
+  const handleLogout = async () => {
+    await signOut();
+    router.push("/login");
+  };
 
-  const signupButtonElement = (
-    <div className="relative group w-full sm:w-auto">
-      <div className="absolute inset-0 -m-2 rounded-full hidden sm:block bg-[#C1FF00] opacity-30 filter blur-lg pointer-events-none transition-all duration-300 ease-out group-hover:opacity-50 group-hover:blur-xl group-hover:-m-3"></div>
-      <button className="relative z-10 px-4 py-2 sm:px-3 text-xs sm:text-sm font-bold text-[#0A0A0F] bg-[#C1FF00] rounded-full hover:bg-[#D4FF33] transition-all duration-200 w-full sm:w-auto">
-        Join Beta
+  const authButtonsElement = user ? (
+    <div className="flex items-center gap-3">
+      <span className="text-xs sm:text-sm text-[#A0A0B8]">{user.email}</span>
+      <button
+        onClick={handleLogout}
+        disabled={loading}
+        className="px-4 py-2 sm:px-3 text-xs sm:text-sm border border-red-500/30 bg-red-500/10 text-red-400 rounded-full hover:border-red-500/60 hover:text-red-500 hover:bg-red-500/20 transition-colors duration-200 w-full sm:w-auto font-medium flex items-center gap-2 justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        <LogOut className="w-4 h-4" />
+        Log Out
       </button>
     </div>
+  ) : (
+    <>
+      <Link
+        href="/login"
+        className="px-4 py-2 sm:px-3 text-xs sm:text-sm border border-[#3D3D54] bg-transparent text-[#A0A0B8] rounded-full hover:border-[#C1FF00]/60 hover:text-[#C1FF00] transition-colors duration-200 w-full sm:w-auto font-medium block text-center"
+      >
+        Log In
+      </Link>
+      <div className="relative group w-full sm:w-auto">
+        <div className="absolute inset-0 -m-2 rounded-full hidden sm:block bg-[#C1FF00] opacity-30 filter blur-lg pointer-events-none transition-all duration-300 ease-out group-hover:opacity-50 group-hover:blur-xl group-hover:-m-3"></div>
+        <Link
+          href="/signup"
+          className="relative z-10 px-4 py-2 sm:px-3 text-xs sm:text-sm font-bold text-[#0A0A0F] bg-[#C1FF00] rounded-full hover:bg-[#D4FF33] transition-all duration-200 w-full sm:w-auto block text-center"
+        >
+          Join Beta
+        </Link>
+      </div>
+    </>
   );
 
   return (
@@ -114,8 +141,7 @@ export function Header() {
 
         {/* Desktop Buttons */}
         <div className="hidden sm:flex items-center gap-2">
-          {loginButtonElement}
-          {signupButtonElement}
+          {authButtonsElement}
         </div>
 
         {/* Mobile Menu Button */}
@@ -151,8 +177,7 @@ export function Header() {
               ))}
             </nav>
             <div className="flex flex-col items-center space-y-2 w-full gap-2">
-              {loginButtonElement}
-              {signupButtonElement}
+              {authButtonsElement}
             </div>
           </motion.div>
         )}
