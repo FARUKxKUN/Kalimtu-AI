@@ -36,7 +36,7 @@ export function Hero() {
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-              className="text-4xl md:text-6xl xl:text-7xl font-bold tracking-tight text-white mb-6 font-display leading-[0.95]"
+              className="text-5xl md:text-7xl xl:text-8xl font-bold tracking-tight text-white mb-6 font-display leading-[0.95]"
             >
               Transcription That <br />
               <span className="text-gradient-lime">Understands Tunisian</span>
