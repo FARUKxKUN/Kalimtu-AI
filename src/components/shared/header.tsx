@@ -65,12 +65,7 @@ export function Header() {
   }, [isOpen]);
 
   const logoElement = (
-    <div className="relative w-6 h-6 flex items-center justify-center">
-      <div className="absolute w-1.5 h-1.5 rounded-full bg-[#C1FF00] top-0 left-1/2 transform -translate-x-1/2"></div>
-      <div className="absolute w-1.5 h-1.5 rounded-full bg-[#C1FF00] left-0 top-1/2 transform -translate-y-1/2"></div>
-      <div className="absolute w-1.5 h-1.5 rounded-full bg-[#C1FF00] right-0 top-1/2 transform -translate-y-1/2"></div>
-      <div className="absolute w-1.5 h-1.5 rounded-full bg-[#C1FF00] bottom-0 left-1/2 transform -translate-x-1/2"></div>
-    </div>
+    <img src="/logo.svg" alt="Kalimtu Logo" className="h-6 w-auto object-contain" />
   );
 
   const loginButtonElement = (

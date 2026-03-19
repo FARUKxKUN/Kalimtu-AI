@@ -3,6 +3,7 @@
 import { Header } from "@/components/shared/header";
 import { Footer } from "@/components/shared/footer";
 import { Hero } from "@/components/sections/hero";
+import { LogoSparkles } from "@/components/ui/logo-sparkles";
 import { BackgroundPaths } from "@/components/ui/background-paths";
 import { WorkflowTutorial } from "@/components/sections/workflow-tutorial";
 import { HowItWorks } from "@/components/sections/how-it-works";
@@ -18,8 +19,9 @@ import { PremiumCTA } from "@/components/sections/premium-cta";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-[#0A0A0F] noise-overlay">
+    <div className="min-h-screen bg-[#0A0A0F] noise-overlay relative">
       <Header />
+      <LogoSparkles />
 
       <main>
         <Hero />

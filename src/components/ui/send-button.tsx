@@ -15,8 +15,8 @@ const StyledButton = styled.button`
   font-size: 16px;
   background: #C1FF00;
   color: #0A0A0F;
-  padding: 0.6875rem 1rem;
-  padding-left: 0.9rem;
+  padding: 0.6875rem 2.2rem;
+  padding-left: 1.2rem;
   display: flex;
   align-items: center;
   gap: 0.3em;

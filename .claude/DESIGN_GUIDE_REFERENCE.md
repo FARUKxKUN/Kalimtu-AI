@@ -116,7 +116,7 @@ Small:    12px — Labels, captions
 #### Large Icon Container (48px)
 ```jsx
 <div className="w-14 h-14 rounded-xl
-  bg-gradient-to-br from-[#C1FF00]/10 to-[#C1FF00]/5
+  bg-linear-to-br from-[#C1FF00]/10 to-[#C1FF00]/5
   border border-[#C1FF00]/20
   flex items-center justify-center
   group-hover:scale-110 group-hover:border-[#C1FF00]/40

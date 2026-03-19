@@ -12,6 +12,20 @@ export function Hero() {
 
   return (
     <section className="relative pt-28 md:pt-40 pb-16 md:pb-24 overflow-hidden">
+      {/* Mid-sized Logo on the Left Empty Side */}
+      <motion.div
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+        className="absolute top-10 left-6 md:top-14 md:left-14 z-20 hidden sm:block"
+      >
+        <img 
+          src="/logo.svg" 
+          alt="Kalimtu" 
+          className="w-20 md:w-28 lg:w-36 h-auto object-contain opacity-90 hover:opacity-100 transition-opacity" 
+        />
+      </motion.div>
+
       {/* Background Glow — shifted left */}
       <div className="absolute top-20 left-0 w-[600px] h-[600px] bg-[#C1FF00]/5 blur-[140px] rounded-full pointer-events-none" />
       {/* Secondary glow — behind video */}
