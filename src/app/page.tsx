@@ -8,8 +8,6 @@ import { BackgroundPaths } from "@/components/ui/background-paths";
 import { WorkflowTutorial } from "@/components/sections/workflow-tutorial";
 import { HowItWorks } from "@/components/sections/how-it-works";
 import { Pricing } from "@/components/sections/pricing";
-import { Features } from "@/components/sections/features";
-import { Benefits } from "@/components/sections/benefits";
 import { Stats } from "@/components/sections/stats";
 import { Comparison } from "@/components/sections/comparison";
 import { Testimonials } from "@/components/sections/testimonials";
@@ -31,8 +29,6 @@ export default function Home() {
           cta="Join the Beta"
           onCtaClick={() => document.getElementById("waitlist")?.scrollIntoView({ behavior: "smooth" })}
         />
-        <Features />
-        <Benefits />
         <Stats />
         <Comparison />
         <Testimonials />

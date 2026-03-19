@@ -17,12 +17,12 @@ export function Hero() {
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-        className="absolute top-10 left-6 md:top-14 md:left-14 z-20 hidden sm:block"
+        className="absolute top-10 left-4 md:top-14 md:left-8 xl:left-10 z-20 hidden sm:block"
       >
         <img 
           src="/logo.svg" 
           alt="Kalimtu" 
-          className="w-20 md:w-28 lg:w-36 h-auto object-contain opacity-90 hover:opacity-100 transition-opacity" 
+          className="w-16 md:w-20 lg:w-28 h-auto object-contain opacity-90 hover:opacity-100 transition-opacity" 
         />
       </motion.div>
 
