@@ -5,8 +5,6 @@ import { Footer } from "@/components/shared/footer";
 import { Hero } from "@/components/sections/hero";
 import { LogoSparkles } from "@/components/ui/logo-sparkles";
 import { BackgroundPaths } from "@/components/ui/background-paths";
-import { WorkflowTutorial } from "@/components/sections/workflow-tutorial";
-import { HowItWorks } from "@/components/sections/how-it-works";
 import { Pricing } from "@/components/sections/pricing";
 import { Stats } from "@/components/sections/stats";
 import { Comparison } from "@/components/sections/comparison";
@@ -33,8 +31,6 @@ export default function Home() {
         <Comparison />
         <Testimonials />
         <GettingStarted />
-        <WorkflowTutorial />
-        <HowItWorks />
         <FAQ />
         <PremiumCTA />
         <Pricing />

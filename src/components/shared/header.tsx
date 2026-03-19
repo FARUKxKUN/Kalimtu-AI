@@ -100,12 +100,16 @@ export function Header() {
       </Link>
       <div className="relative group w-full sm:w-auto">
         <div className="absolute inset-0 -m-2 rounded-full hidden sm:block bg-[#C1FF00] opacity-30 filter blur-lg pointer-events-none transition-all duration-300 ease-out group-hover:opacity-50 group-hover:blur-xl group-hover:-m-3"></div>
-        <Link
-          href="/signup"
-          className="relative z-10 px-4 py-2 sm:px-3 text-xs sm:text-sm font-bold text-[#0A0A0F] bg-[#C1FF00] rounded-full hover:bg-[#D4FF33] transition-all duration-200 w-full sm:w-auto block text-center"
+        <a
+          href="#waitlist"
+          onClick={(e) => {
+            e.preventDefault();
+            document.getElementById("waitlist")?.scrollIntoView({ behavior: "smooth" });
+          }}
+          className="relative z-10 px-4 py-2 sm:px-3 text-xs sm:text-sm font-bold text-[#0A0A0F] bg-[#C1FF00] rounded-full hover:bg-[#D4FF33] transition-all duration-200 w-full sm:w-auto block text-center cursor-pointer"
         >
           Join Beta
-        </Link>
+        </a>
       </div>
     </>
   );

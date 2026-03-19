@@ -12,17 +12,17 @@ export function Hero() {
 
   return (
     <section className="relative pt-28 md:pt-40 pb-16 md:pb-24 overflow-hidden">
-      {/* Mid-sized Logo on the Left Empty Side */}
+      {/* Mid-sized Logo on the Left Empty Side — positioned below header, outside content flow */}
       <motion.div
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-        className="absolute top-10 left-4 md:top-14 md:left-8 xl:left-10 z-20 hidden sm:block"
+        className="absolute top-28 md:top-36 left-4 md:left-8 xl:left-10 z-0 hidden xl:block"
       >
-        <img 
-          src="/logo.svg" 
-          alt="Kalimtu" 
-          className="w-16 md:w-20 lg:w-28 h-auto object-contain opacity-90 hover:opacity-100 transition-opacity" 
+        <img
+          src="/logo.svg"
+          alt="Kalimtu"
+          className="w-12 md:w-14 lg:w-16 h-auto object-contain opacity-60 hover:opacity-80 transition-opacity"
         />
       </motion.div>
 
@@ -68,6 +68,7 @@ export function Hero() {
             </motion.p>
 
             <motion.div
+              id="waitlist"
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
