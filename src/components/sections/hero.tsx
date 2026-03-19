@@ -17,7 +17,7 @@ export function Hero() {
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-        className="absolute top-28 md:top-36 left-4 md:left-8 xl:left-10 z-0 hidden xl:block"
+        className="absolute top-6 left-4 md:left-8 xl:left-10 z-0 hidden xl:block"
       >
         <img
           src="/logo.svg"
@@ -72,7 +72,7 @@ export function Hero() {
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              className="w-full max-w-md"
+              className="w-full max-w-sm"
             >
               <WaitlistForm showCount />
             </motion.div>

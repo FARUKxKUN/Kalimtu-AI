@@ -4,7 +4,6 @@ import { Header } from "@/components/shared/header";
 import { Footer } from "@/components/shared/footer";
 import { Hero } from "@/components/sections/hero";
 import { LogoSparkles } from "@/components/ui/logo-sparkles";
-import { BackgroundPaths } from "@/components/ui/background-paths";
 import { Pricing } from "@/components/sections/pricing";
 import { Stats } from "@/components/sections/stats";
 import { Comparison } from "@/components/sections/comparison";
@@ -21,12 +20,6 @@ export default function Home() {
 
       <main>
         <Hero />
-        <BackgroundPaths
-          title="Experience Tunisian Transcription"
-          subtitle="Join hundreds of Tunisian professionals who are capturing every word, perfectly. Real-time AI transcription built specifically for how you speak."
-          cta="Join the Beta"
-          onCtaClick={() => document.getElementById("waitlist")?.scrollIntoView({ behavior: "smooth" })}
-        />
         <Stats />
         <Comparison />
         <Testimonials />

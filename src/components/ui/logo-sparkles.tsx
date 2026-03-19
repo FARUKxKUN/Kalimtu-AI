@@ -20,7 +20,7 @@ export function LogoSparkles() {
   }, []);
 
   return (
-    <div className="absolute top-[140px] md:top-[180px] bottom-0 left-4 md:left-8 xl:left-10 w-12 md:w-14 lg:w-16 z-0 pointer-events-none overflow-hidden hidden xl:block">
+    <div className="absolute top-[80px] md:top-[80px] bottom-0 left-4 md:left-8 xl:left-10 w-24 md:w-28 lg:w-32 z-0 pointer-events-none hidden xl:block">
       {/* 
         This container matches the x-position and width of the logo in the hero section.
         It starts just below the logo and spans to the very bottom of the page.
